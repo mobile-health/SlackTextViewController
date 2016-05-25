@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return An initialized SLKTextInputbar object or nil if the object could not be created.
  */
 - (instancetype)initWithTextViewClass:(Class)textViewClass;
+- (instancetype)initWithTextViewClass:(Class)textViewClass rightButtonClass:(Class)rightButtonClass;
 
 
 #pragma mark - Text Editing

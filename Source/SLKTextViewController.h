@@ -536,6 +536,8 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
  */
 - (void)registerClassForTextView:(Class _Nullable)aClass;
 
+- (void)registerClassForInputRightButton:(Class _Nullable)aClass;
+
 /**
  Registers a class for customizing the behavior and appearance of the typing indicator view.
  You need to call this method inside of any initialization method.

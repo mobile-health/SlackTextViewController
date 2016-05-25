@@ -35,6 +35,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 @property (nonatomic) CGPoint previousOrigin;
 
 @property (nonatomic, strong) Class textViewClass;
+@property (nonatomic, strong) Class rightButtonClass;
 
 @property (nonatomic, getter=isHidden) BOOL hidden; // Required override
 
@@ -49,6 +50,17 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 {
     if (self = [super init]) {
         self.textViewClass = textViewClass;
+        self.rightButtonClass = [UIButton class];
+        [self slk_commonInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithTextViewClass:(Class)textViewClass rightButtonClass:(Class)rightButtonClass
+{
+    if (self = [super init]) {
+        self.textViewClass = textViewClass;
+        self.rightButtonClass = rightButtonClass;
         [self slk_commonInit];
     }
     return self;
@@ -172,7 +184,8 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 - (UIButton *)rightButton
 {
     if (!_rightButton) {
-        _rightButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        Class class = self.rightButtonClass ? : [UIButton class];
+        _rightButton = [class buttonWithType:UIButtonTypeSystem];
         _rightButton.translatesAutoresizingMaskIntoConstraints = NO;
         _rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
         _rightButton.enabled = NO;
