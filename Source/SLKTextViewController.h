@@ -20,6 +20,8 @@
 
 #import "SLKUIConstants.h"
 
+#import "PFViewController.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -45,7 +47,7 @@ typedef NS_ENUM(NSUInteger, SLKKeyboardStatus) {
 };
 
 /** @name A drop-in UIViewController subclass with a growing text input view and other useful messaging features. */
-NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController <SLKTextViewDelegate, UITableViewDelegate, UITableViewDataSource,
+NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : PFViewController <SLKTextViewDelegate, UITableViewDelegate, UITableViewDataSource,
                                                                                 UICollectionViewDelegate, UICollectionViewDataSource,
                                                                                 UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
