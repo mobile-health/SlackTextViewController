@@ -227,6 +227,28 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     return _editorContentView;
 }
 
+
+- (UIView *)joinView
+{
+    if (!_joinView) {
+        _joinView = [UIView new];
+        _joinView.translatesAutoresizingMaskIntoConstraints = NO;
+        _joinView.backgroundColor = self.backgroundColor;
+        _joinView.clipsToBounds = YES;
+        _joinView.hidden = YES;
+    }
+}
+
+- (void)joinButton
+{
+    if (!_joinButton) {
+        _joinButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _joinButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _joinButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _joinButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+    }
+}
+
 - (UILabel *)editorTitle
 {
     if (!_editorTitle) {

@@ -118,6 +118,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)endTextEdition;
 
 
+@property (nonatomic, strong) UIView *joinView;
+@property (nonatomic, strong) UIButton *joinButton;
+
+
 #pragma mark - Text Counting
 ///------------------------------------------------
 /// @name Text Counting
