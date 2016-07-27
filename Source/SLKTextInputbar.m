@@ -96,6 +96,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     [self addSubview:self.rightButton];
     [self addSubview:self.textView];
     [self addSubview:self.charCountLabel];
+    [self addSubview:self.joinView];
     
     [self slk_setupViewConstraints];
     [self slk_updateConstraintConstants];
@@ -233,20 +234,53 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     if (!_joinView) {
         _joinView = [UIView new];
         _joinView.translatesAutoresizingMaskIntoConstraints = NO;
-        _joinView.backgroundColor = self.backgroundColor;
+        _joinView.backgroundColor = self.barTintColor;
         _joinView.clipsToBounds = YES;
         _joinView.hidden = YES;
+        
+        [_joinView addSubview:self.joinButton];
+        [_joinView addSubview:self.joinIndicator];
+        
+        NSDictionary *views = @{@"button": self.joinButton,
+                                @"indicator" : self.joinIndicator,
+                                };
+        
+        NSDictionary *metrics = @{@"left" : @(10.0),
+                                  @"right" : @(10.0),
+                                  @"top" : @(0.0),
+                                  @"bottom" : @(0.0)
+                                  };
+        
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[button]-(right)-|" options:0 metrics:metrics views:views]];
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[button]-(bottom)-|" options:0 metrics:metrics views:views]];
+        
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[indicator]" options:NSLayoutFormatAlignAllCenterX | NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
     }
+    return _joinView;
 }
 
-- (void)joinButton
+- (UIButton *)joinButton
 {
     if (!_joinButton) {
         _joinButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _joinButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _joinButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _joinButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         _joinButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        
+        NSString *title = NSLocalizedString(@"Join", nil);
+        [_joinButton setTitle:title forState:UIControlStateNormal];
     }
+    return _joinButton;
+}
+
+- (UIActivityIndicatorView *)joinIndicator
+{
+    if (!_joinIndicator) {
+        _joinIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _joinIndicator.hidesWhenStopped = YES;
+        [_joinIndicator stopAnimating];
+    }
+    return _joinIndicator;
 }
 
 - (UILabel *)editorTitle
@@ -411,6 +445,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 {
     self.barTintColor = color;
     self.editorContentView.backgroundColor = color;
+    self.joinView.backgroundColor = color;
 }
 
 - (void)setAutoHideRightButton:(BOOL)hide
@@ -498,6 +533,20 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     }
     
     [self addConstraints:self.charCountLabelVCs];
+}
+
+- (void)setHiddenJoinView:(BOOL)hidden
+{
+    self.joinView.hidden = hidden;
+}
+
+- (void)startActivitiIndicator:(BOOL)start
+{
+    self.joinButton.hidden = start;
+    if (start) {
+        [self.joinIndicator startAnimating];
+    } else
+        [self.joinIndicator stopAnimating];
 }
 
 
@@ -633,7 +682,8 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                             @"leftButton": self.leftButton,
                             @"rightButton": self.rightButton,
                             @"contentView": self.editorContentView,
-                            @"charCountLabel": self.charCountLabel
+                            @"charCountLabel": self.charCountLabel,
+                            @"joinView": self.joinView
                             };
     
     NSDictionary *metrics = @{@"top" : @(self.contentInset.top),
@@ -648,6 +698,9 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left@250)-[charCountLabel(<=50@1000)]-(right@750)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[contentView(0)]-(<=top)-[textView(0@999)]-(bottom)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:metrics views:views]];
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[joinView]|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[joinView]|" options:0 metrics:metrics views:views]];
     
     self.editorContentViewHC = [self slk_constraintForAttribute:NSLayoutAttributeHeight firstItem:self.editorContentView secondItem:nil];
     

@@ -284,6 +284,8 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : PFViewController 
  */
 - (void)didPressRightButton:(id _Nullable)sender NS_REQUIRES_SUPER;
 
+- (void)didPressJoinButton:(id)sender;
+
 /**
  Verifies if the right button can be pressed. If NO, the button is disabled.
  You can override this method to perform additional tasks. You SHOULD call super to inherit some conditionals.

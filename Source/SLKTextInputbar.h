@@ -120,6 +120,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIView *joinView;
 @property (nonatomic, strong) UIButton *joinButton;
+@property (nonatomic, strong) UIActivityIndicatorView *joinIndicator;
+
+- (void)setHiddenJoinView:(BOOL)hidden;
+- (void)startActivitiIndicator:(BOOL)start;
 
 
 #pragma mark - Text Counting

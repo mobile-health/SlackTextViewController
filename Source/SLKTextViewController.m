@@ -314,6 +314,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         [_textInputbar.rightButton addTarget:self action:@selector(didPressRightButton:) forControlEvents:UIControlEventTouchUpInside];
         [_textInputbar.editorLeftButton addTarget:self action:@selector(didCancelTextEditing:) forControlEvents:UIControlEventTouchUpInside];
         [_textInputbar.editorRightButton addTarget:self action:@selector(didCommitTextEditing:) forControlEvents:UIControlEventTouchUpInside];
+        [_textInputbar.joinButton addTarget:self action:@selector(didPressJoinButton:) forControlEvents:UIControlEventTouchUpInside];
         
         _textInputbar.textView.delegate = self;
         
@@ -771,6 +772,11 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Clears the text and but not the undo manager
     [self.textView slk_clearText:NO];
+}
+
+- (void)didPressJoinButton:(id)sender
+{
+    
 }
 
 - (void)didCancelTextEditing:(id)sender
