@@ -243,18 +243,15 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         
         NSDictionary *views = @{@"button": self.joinButton,
                                 @"indicator" : self.joinIndicator,
+                                @"superview" : _joinView,
                                 };
         
-        NSDictionary *metrics = @{@"left" : @(10.0),
-                                  @"right" : @(10.0),
-                                  @"top" : @(0.0),
-                                  @"bottom" : @(0.0)
-                                  };
         
-        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[button]-(right)-|" options:0 metrics:metrics views:views]];
-        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[button]-(bottom)-|" options:0 metrics:metrics views:views]];
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0.0)-[button]-(0.0)-|" options:0 metrics:nil views:views]];
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(0.0)-[button]-(0.0)-|" options:0 metrics:nil views:views]];
         
-        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[indicator]" options:NSLayoutFormatAlignAllCenterX | NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[superview]-(<=1)-[indicator]" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+        [_joinView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[superview]-(<=1)-[indicator]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
     }
     return _joinView;
 }
@@ -277,6 +274,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 {
     if (!_joinIndicator) {
         _joinIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _joinIndicator.translatesAutoresizingMaskIntoConstraints = NO;
         _joinIndicator.hidesWhenStopped = YES;
         [_joinIndicator stopAnimating];
     }
