@@ -1332,6 +1332,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     }
     
     UIResponder *currentResponder = [UIResponder slk_currentFirstResponder];
+    if ([currentResponder isKindOfClass:[SLKTextInputbar class]]) {
+        currentResponder = self.textView;
+    }
     
     // Skips if it's not the expected textView and shouldn't force adjustment of the text input bar.
     // This will also dismiss the text input bar if it's visible, and exit auto-completion mode if enabled.

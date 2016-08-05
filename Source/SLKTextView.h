@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SLKTextInput.h"
+#import <YYText/YYText.h>
 
 typedef NS_OPTIONS(NSUInteger, SLKPastableMediaType) {
     SLKPastableMediaTypeNone        = 0,
@@ -37,9 +38,9 @@ UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
 @protocol SLKTextViewDelegate;
 
 /** @name A custom text input view. */
-@interface SLKTextView : UITextView <SLKTextInput>
+@interface SLKTextView : YYTextView <SLKTextInput>
 
-@property (nonatomic, weak) id<SLKTextViewDelegate,UITextViewDelegate>delegate;
+@property (nonatomic, weak) id<SLKTextViewDelegate,YYTextViewDelegate>delegate;
 
 /** The placeholder text string. Default is nil. */
 @property (nonatomic, copy) NSString *_Nullable placeholder;

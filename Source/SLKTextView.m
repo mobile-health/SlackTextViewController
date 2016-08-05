@@ -54,9 +54,17 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
 
 #pragma mark - Initialization
 
-- (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+//- (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
+//{
+//    if (self = [super initWithFrame:frame textContainer:textContainer]) {
+//        [self slk_commonInit];
+//    }
+//    return self;
+//}
+
+- (instancetype)init
 {
-    if (self = [super initWithFrame:frame textContainer:textContainer]) {
+    if (self = [super init]) {
         [self slk_commonInit];
     }
     return self;
@@ -118,15 +126,15 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
 {
     [super layoutSubviews];
     
-    self.placeholderLabel.hidden = [self slk_shouldHidePlaceholder];
-    
-    if (!self.placeholderLabel.hidden) {
-        
-        [UIView performWithoutAnimation:^{
-            self.placeholderLabel.frame = [self slk_placeholderRectThatFits:self.bounds];
-            [self sendSubviewToBack:self.placeholderLabel];
-        }];
-    }
+//    self.placeholderLabel.hidden = [self slk_shouldHidePlaceholder];
+//    
+//    if (!self.placeholderLabel.hidden) {
+//        
+//        [UIView performWithoutAnimation:^{
+//            self.placeholderLabel.frame = [self slk_placeholderRectThatFits:self.bounds];
+//            [self sendSubviewToBack:self.placeholderLabel];
+//        }];
+//    }
 }
 
 
@@ -371,18 +379,18 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     return NO;
 }
 
-- (CGRect)slk_placeholderRectThatFits:(CGRect)bounds
-{
-    CGFloat padding = self.textContainer.lineFragmentPadding;
-    
-    CGRect rect = CGRectZero;
-    rect.size.height = [self.placeholderLabel sizeThatFits:bounds.size].height;
-    rect.size.width = self.textContainer.size.width - padding*2.0;
-    rect.origin = UIEdgeInsetsInsetRect(bounds, self.textContainerInset).origin;
-    rect.origin.x += padding;
-    
-    return rect;
-}
+//- (CGRect)slk_placeholderRectThatFits:(CGRect)bounds
+//{
+//    CGFloat padding = self.textContainer.lineFragmentPadding;
+//    
+//    CGRect rect = CGRectZero;
+//    rect.size.height = [self.placeholderLabel sizeThatFits:bounds.size].height;
+//    rect.size.width = self.textContainer.size.width - padding*2.0;
+//    rect.origin = UIEdgeInsetsInsetRect(bounds, self.textContainerInset).origin;
+//    rect.origin.x += padding;
+//    
+//    return rect;
+//}
 
 
 #pragma mark - Setters
@@ -621,6 +629,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
 
 - (void)paste:(id)sender
 {
+    [super paste:sender];
     id pastedItem = [self slk_pastedItem];
     
     if ([pastedItem isKindOfClass:[NSDictionary class]]) {
@@ -636,7 +645,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
         
         // Inserting the text fixes a UITextView bug whitch automatically scrolls to the bottom
         // and beyond scroll content size sometimes when the text is too long
-        [self slk_insertTextAtCaretRange:pastedItem];
+//        [self slk_insertTextAtCaretRange:pastedItem];
     }
 }
 
@@ -705,9 +714,10 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
 {
     UIMenuItem *undo = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Undo", nil) action:@selector(slk_undo:)];
     UIMenuItem *redo = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Redo", nil) action:@selector(slk_redo:)];
-    UIMenuItem *format = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Format", nil) action:@selector(slk_presentFormattingMenu:)];
+//    UIMenuItem *format = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Format", nil) action:@selector(slk_presentFormattingMenu:)];
     
-    [[UIMenuController sharedMenuController] setMenuItems:@[undo, redo, format]];
+//    [[UIMenuController sharedMenuController] setMenuItems:@[undo, redo, format]];
+    [[UIMenuController sharedMenuController] setMenuItems:@[undo, redo]];
 }
 
 - (void)slk_undo:(id)sender
@@ -720,30 +730,30 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     [self.undoManager redo];
 }
 
-- (void)slk_presentFormattingMenu:(id)sender
-{
-    NSMutableArray *items = [NSMutableArray arrayWithCapacity:self.registeredFormattingTitles.count];
-    
-    for (NSString *name in self.registeredFormattingTitles) {
-        
-        NSString *sel = [NSString stringWithFormat:@"%@%@", SLKTextViewGenericFormattingSelectorPrefix, name];
-        
-        UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:name action:NSSelectorFromString(sel)];
-        [items addObject:item];
-    }
-    
-    self.formatting = YES;
-    
-    UIMenuController *menu = [UIMenuController sharedMenuController];
-    [menu setMenuItems:items];
-    
-    NSLayoutManager *manager = self.layoutManager;
-    CGRect targetRect = [manager boundingRectForGlyphRange:self.selectedRange inTextContainer:self.textContainer];
-    
-    [menu setTargetRect:targetRect inView:self];
-    
-    [menu setMenuVisible:YES animated:YES];
-}
+//- (void)slk_presentFormattingMenu:(id)sender
+//{
+//    NSMutableArray *items = [NSMutableArray arrayWithCapacity:self.registeredFormattingTitles.count];
+//    
+//    for (NSString *name in self.registeredFormattingTitles) {
+//        
+//        NSString *sel = [NSString stringWithFormat:@"%@%@", SLKTextViewGenericFormattingSelectorPrefix, name];
+//        
+//        UIMenuItem *item = [[UIMenuItem alloc] initWithTitle:name action:NSSelectorFromString(sel)];
+//        [items addObject:item];
+//    }
+//    
+//    self.formatting = YES;
+//    
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    [menu setMenuItems:items];
+//    
+//    NSLayoutManager *manager = self.layoutManager;
+//    CGRect targetRect = [manager boundingRectForGlyphRange:self.selectedRange inTextContainer:self.textContainer];
+//    
+//    [menu setTargetRect:targetRect inView:self];
+//    
+//    [menu setMenuVisible:YES animated:YES];
+//}
 
 - (NSString *)slk_formattingTitleFromSelector:(SEL)selector
 {
