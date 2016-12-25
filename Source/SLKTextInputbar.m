@@ -148,6 +148,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         _textView.maxNumberOfLines = [self slk_defaultNumberOfLines];
 
         _textView.typingSuggestionEnabled = YES;
+        _textView.backgroundColor = [UIColor whiteColor];
         _textView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
         _textView.keyboardType = UIKeyboardTypeTwitter;
         _textView.returnKeyType = UIReturnKeyDefault;
@@ -203,7 +204,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     if (!_editorContentView) {
         _editorContentView = [UIView new];
         _editorContentView.translatesAutoresizingMaskIntoConstraints = NO;
-        _editorContentView.backgroundColor = self.backgroundColor;
+        _editorContentView.backgroundColor = [UIColor whiteColor];
         _editorContentView.clipsToBounds = YES;
         _editorContentView.hidden = YES;
         
@@ -442,7 +443,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 - (void)setBackgroundColor:(UIColor *)color
 {
     self.barTintColor = color;
-    self.editorContentView.backgroundColor = color;
+//    self.editorContentView.backgroundColor = color;
     self.joinView.backgroundColor = color;
 }
 
