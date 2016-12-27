@@ -550,6 +550,11 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : PFViewController 
  */
 + (void)clearAllCachedText;
 
+/**
+ Caches text to disk.
+ */
+- (void)cacheTextView;
+
 
 #pragma mark - Customization
 ///------------------------------------------------
