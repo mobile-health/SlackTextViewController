@@ -139,6 +139,9 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : PFViewController 
  */
 - (instancetype)initWithTableViewStyle:(UITableViewStyle)style;
 
+- (instancetype)initWithoutScrollView;
+- (void)slk_commonInit;
+
 /**
  Initializes a collection view controller and configures the collection view with the provided layout.
  If you use the standard -init method, a table view with plain style will be created.
@@ -182,6 +185,8 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : PFViewController 
  @return The collectionView style to be used in the new instantiated collectionView.
  */
 + (UICollectionViewLayout *)collectionViewLayoutForCoder:(NSCoder *)decoder;
+
+- (void)setupScrollView:(UIScrollView * _Nullable)scrollView;
 
 
 #pragma mark - Keyboard Handling

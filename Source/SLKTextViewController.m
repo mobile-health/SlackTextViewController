@@ -82,6 +82,15 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return [self initWithTableViewStyle:UITableViewStylePlain];
 }
 
+- (instancetype)initWithoutScrollView
+{
+    if (self = [super initWithNibName:nil bundle:nil])
+    {
+//        [self slk_commonInit];
+    }
+    return self;
+}
+
 - (instancetype)initWithTableViewStyle:(UITableViewStyle)style
 {
     NSAssert([self class] != [SLKTextViewController class], @"Oops! You must subclass SLKTextViewController.");
@@ -161,6 +170,14 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
+- (void)setupScrollView:(UIScrollView * _Nullable)scrollView
+{
+    _scrollView = scrollView;
+    _scrollView.translatesAutoresizingMaskIntoConstraints = NO; // Makes sure the scrollView plays nice with auto-layout
+    
+    self.scrollViewProxy = _scrollView;
+}
+
 
 #pragma mark - View lifecycle
 
@@ -173,6 +190,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 {
     [super viewDidLoad];
     
+    [self customViewDidLoad];
+    
     [self.view addSubview:self.scrollViewProxy];
     [self.view addSubview:self.autoCompletionView];
     [self.view addSubview:self.typingIndicatorProxyView];
@@ -181,6 +200,11 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     [self slk_setupViewConstraints];
     
     [self slk_registerKeyCommands];
+}
+
+- (void)customViewDidLoad
+{
+//    virtual
 }
 
 - (void)viewWillAppear:(BOOL)animated
