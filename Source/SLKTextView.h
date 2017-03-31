@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SLKTextInput.h"
-#import <YYText/YYText.h>
+#import "MintAnnotationChatView.h"
 
 typedef NS_OPTIONS(NSUInteger, SLKPastableMediaType) {
     SLKPastableMediaTypeNone        = 0,
@@ -38,9 +38,9 @@ UIKIT_EXTERN NSString * const SLKTextViewPastedItemData;
 @protocol SLKTextViewDelegate;
 
 /** @name A custom text input view. */
-@interface SLKTextView : YYTextView <SLKTextInput>
+@interface SLKTextView : MintAnnotationChatView <SLKTextInput>
 
-@property (nonatomic, weak) id<SLKTextViewDelegate,YYTextViewDelegate>delegate;
+@property (nonatomic, weak) id<SLKTextViewDelegate, UITextViewDelegate>delegate;
 
 /** The placeholder text string. Default is nil. */
 @property (nonatomic, copy) NSString *_Nullable placeholder;
