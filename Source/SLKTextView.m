@@ -621,9 +621,9 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
         return NO;
     }
     
-    if (action == @selector(slk_presentFormattingMenu:)) {
-        return self.selectedRange.length > 0 ? YES : NO;
-    }
+//    if (action == @selector(slk_presentFormattingMenu:)) {
+//        return self.selectedRange.length > 0 ? YES : NO;
+//    }
     
     if (action == @selector(paste:) && [self slk_isPasteboardItemSupported]) {
         return YES;
