@@ -52,8 +52,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 // YES if the view controller's view's size is changing by its parent (i.e. when its window rotates or is resized)
 @property (nonatomic, getter = isTransitioning) BOOL transitioning;
 
-    @property (nonatomic, readwrite) BOOL _isTextInputBarHidden;
-
 // Optional classes to be used instead of the default ones.
 @property (nonatomic, strong) Class textViewClass;
 @property (nonatomic, strong) Class typingIndicatorViewClass;
@@ -157,8 +155,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     self.keyboardPanningEnabled = YES;
     self.shouldClearTextAtRightButtonPress = YES;
     self.shouldScrollToBottomAfterKeyboardShows = NO;
-    self._isTextInputBarHidden = NO;
-
+    
     self.automaticallyAdjustsScrollViewInsets = YES;
     self.extendedLayoutIncludesOpaqueBars = YES;
 }
@@ -904,19 +901,18 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (void)setTextInputbarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    if (self._isTextInputBarHidden == hidden) {
+    if (self.isTextInputbarHidden == hidden) {
         return;
     }
-
+    
     _textInputbar.hidden = hidden;
-    self._isTextInputBarHidden = hidden;
 
     if (@available(iOS 11.0, *)) {
         [self viewSafeAreaInsetsDidChange];
     }
     
     __weak typeof(self) weakSelf = self;
-    
+
     void (^animations)(void) = ^void(){
         
         weakSelf.textInputbarHC.constant = hidden ? 0.0 : weakSelf.textInputbar.appropriateHeight;
@@ -2280,9 +2276,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (void)slk_updateViewConstraints
 {
-    if (!self._isTextInputBarHidden)  {
-        self.textInputbarHC.constant = self.textInputbar.minimumInputbarHeight;
-    }
+    self.textInputbarHC.constant = self.textInputbar.hidden ? 0.0 : self.textInputbar.minimumInputbarHeight;
     self.scrollViewHC.constant = [self slk_appropriateScrollViewHeight];
     self.keyboardHC.constant = [self slk_appropriateKeyboardHeightFromRect:CGRectNull];
     
