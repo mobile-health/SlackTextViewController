@@ -208,7 +208,7 @@
 
 - (void)hideOrShowTextInputbar:(id)sender
 {
-    BOOL hide = !self.textInputbarHidden;
+    BOOL hide = !self.isTextInputbarHidden;
     
     UIImage *image = hide ? [UIImage imageNamed:@"icn_arrow_up"] : [UIImage imageNamed:@"icn_arrow_down"];
     UIBarButtonItem *buttonItem = (UIBarButtonItem *)sender;

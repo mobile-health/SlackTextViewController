@@ -357,6 +357,8 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
  */
 - (void)setTextInputbarHidden:(BOOL)hidden animated:(BOOL)animated;
 
+- (BOOL)isTextInputbarHidden;
+    
 #pragma mark - Text Edition
 ///------------------------------------------------
 /// @name Text Edition
