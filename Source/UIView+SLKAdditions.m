@@ -64,7 +64,17 @@
 - (NSLayoutConstraint *)slk_constraintForAttribute:(NSLayoutAttribute)attribute firstItem:(id)first secondItem:(id)second
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"firstAttribute = %d AND firstItem = %@ AND secondItem = %@", attribute, first, second];
-    return [[self.constraints filteredArrayUsingPredicate:predicate] firstObject];
+    NSArray<NSLayoutConstraint *>* const constraints = [self.constraints filteredArrayUsingPredicate:predicate];
+    
+    // NOTE: This is a quick fix. We need to find the root cause which produces duplicate constraints and fix that.
+    // Here, we are fixing the symptom only.
+    if (constraints.count > 1) {
+        // deactivate duplicate constraints.
+        NSArray<NSLayoutConstraint *>* const duplicates = [constraints subarrayWithRange:NSMakeRange(1, constraints.count - 1)];
+        [NSLayoutConstraint deactivateConstraints:duplicates];
+    }
+    
+    return [constraints firstObject];
 }
 
 @end

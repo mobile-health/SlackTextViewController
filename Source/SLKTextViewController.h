@@ -121,6 +121,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 @property (nonatomic, readonly) SLKTextView *textView;
 @property (nonatomic, readonly) UIButton *leftButton;
 @property (nonatomic, readonly) UIButton *rightButton;
+@property (nonatomic, assign) BOOL adjustsContentInsetBeforeLayout;
 
 
 #pragma mark - Initialization
@@ -618,6 +619,10 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillLayoutSubviews NS_REQUIRES_SUPER;
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
+- (void)slk_setupViewConstraints;
+- (void)slk_updateViewConstraints;
+- (void)slk_registerNotifications;
+@property (nonatomic, strong) NSLayoutConstraint *keyboardHC;
 
 @end
 

@@ -112,6 +112,47 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 #pragma mark - UIView Overrides
 
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+    // iOS 11.0 only bug fix.
+    for (UIView * subview in [self subviews]) {
+        if (![NSStringFromClass([subview class]) isEqualToString:@"_UIToolbarContentView"]) {
+            continue;
+        }
+        // check top constraint.
+        NSLayoutConstraint *constraint = [self slk_constraintForAttribute:NSLayoutAttributeTop firstItem:subview secondItem:self];
+        
+        if (constraint == nil) {
+            // check reverse order.
+            constraint = [self slk_constraintForAttribute:NSLayoutAttributeTop firstItem:self secondItem:subview];
+        }
+        
+        if (constraint == nil) {
+            // no constraint found.
+            // this is a bug from iOS 11.0
+            // we will add the constraint manually to correct the layout issue.
+            NSMutableArray<NSLayoutConstraint *> *newConstraints = [NSMutableArray new];
+            
+            [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[subview]-|"
+                                                                                        options:0
+                                                                                        metrics:nil
+                                                                                          views:NSDictionaryOfVariableBindings(subview)]];
+            [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[subview]-|"
+                                                                                        options:0
+                                                                                        metrics:nil
+                                                                                          views:NSDictionaryOfVariableBindings(subview)]];
+            [NSLayoutConstraint activateConstraints:newConstraints];
+            NSString* const systemVersion = [[UIDevice currentDevice] systemVersion];
+            // ver >= 11.0 && ver < 11.2
+            if ([systemVersion compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending &&
+                [systemVersion compare:@"11.2" options:NSNumericSearch] == NSOrderedAscending) {
+                subview.transform = CGAffineTransformMakeTranslation(-8, 0);
+            }
+        }
+    }
+}
+
 - (void)layoutIfNeeded
 {
     if (self.constraints.count == 0 || !self.window) {
