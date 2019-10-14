@@ -6,6 +6,9 @@
 
 - Enables building the CocoaPod with `CLANG_MODULES_ENABLED=NO` which enables compiling with `ccache`.
 
+##### Hot Fixes & Enhancements
+- Fixed the text input font rendering in iOS 13
+
 ## [Version 1.9.6](https://github.com/slackhq/SlackTextViewController/releases/tag/v1.9.6)
 
 This release includes many iOS 11 and iPhone X hot fixes.
