@@ -327,7 +327,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         _textInputbar.translatesAutoresizingMaskIntoConstraints = NO;
         
         [_textInputbar.leftButton addTarget:self action:@selector(didPressLeftButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_textInputbar.rightButton addTarget:self action:@selector(didPressRightButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_textInputbar.submitButton addTarget:self action:@selector(didPressRightButton:) forControlEvents:UIControlEventTouchUpInside];
         [_textInputbar.editorLeftButton addTarget:self action:@selector(didCancelTextEditing:) forControlEvents:UIControlEventTouchUpInside];
         [_textInputbar.editorRightButton addTarget:self action:@selector(didCommitTextEditing:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -383,7 +383,12 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return _textInputbar.leftButton;
 }
 
-- (UIButton *)rightButton
+- (UIButton *)submitButton
+{
+    return _textInputbar.submitButton;
+}
+
+- (UIButton *)actionButton
 {
     return _textInputbar.rightButton;
 }
@@ -684,7 +689,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     CGFloat inputbarHeight = _textInputbar.appropriateHeight;
     
-    _textInputbar.rightButton.enabled = [self canPressRightButton];
+    _textInputbar.submitButton.enabled = [self canPressRightButton];
     _textInputbar.editorRightButton.enabled = [self canPressRightButton];
     
     if (inputbarHeight != self.textInputbarHC.constant)
@@ -1147,10 +1152,10 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (void)slk_performRightAction
 {
-    NSArray *actions = [self.rightButton actionsForTarget:self forControlEvent:UIControlEventTouchUpInside];
+    NSArray *actions = [self.submitButton actionsForTarget:self forControlEvent:UIControlEventTouchUpInside];
     
     if (actions.count > 0 && [self canPressRightButton]) {
-        [self.rightButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+        [self.submitButton sendActionsForControlEvents:UIControlEventTouchUpInside];
     }
 }
 

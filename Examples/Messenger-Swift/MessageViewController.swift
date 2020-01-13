@@ -64,9 +64,9 @@ class MessageViewController: SLKTextViewController {
         self.leftButton.setImage(UIImage(named: "icn_upload"), for: UIControl.State())
         self.leftButton.tintColor = UIColor.gray
         
-        self.rightButton.setTitle(NSLocalizedString("Send", comment: ""), for: UIControl.State())
+        self.submitButton.setTitle(NSLocalizedString("Send", comment: ""), for: UIControl.State())
         
-        self.textInputbar.autoHideRightButton = true
+        self.textInputbar.autoHideRightButton = false
         self.textInputbar.maxCharCount = 256
         self.textInputbar.counterStyle = .split
         self.textInputbar.counterPosition = .top

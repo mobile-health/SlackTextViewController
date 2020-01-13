@@ -33,12 +33,15 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 @property (nonatomic, strong) NSArray *charCountLabelVCs;
 
 @property (nonatomic, strong) UILabel *charCountLabel;
+@property (nonatomic, strong) UIView *buttonsView;
 
 @property (nonatomic) CGPoint previousOrigin;
 
 @property (nonatomic, strong) Class textViewClass;
 
 @property (nonatomic, getter=isHidden) BOOL hidden; // Required override
+
+@property (nonatomic, readwrite) BOOL leftButtonIsHidden;
 
 @end
 
@@ -77,13 +80,15 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (void)slk_commonInit
 {
+    self.backgroundColor = [UIColor whiteColor];
     self.charCountLabelNormalColor = [UIColor lightGrayColor];
     self.charCountLabelWarningColor = [UIColor redColor];
     
-    self.autoHideRightButton = YES;
+    self.autoHideRightButton = NO;
     self.leftButtonIsHidden = YES;
     self.editorContentViewHeight = 38.0;
-    self.contentInset = UIEdgeInsetsMake(5.0, 8.0, 5.0, 8.0);
+    self.toolBarButtonsViewHeight = 44.0;
+    self.contentInset = UIEdgeInsetsMake(5.0, 8.0, 0.0, 8.0);
 
     // Since iOS 11, it is required to call -layoutSubviews before adding custom subviews
     // so private UIToolbar subviews don't interfere on the touch hierarchy
@@ -95,6 +100,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     [self addSubview:self.textView];
     [self addSubview:self.charCountLabel];
     [self addSubview:self.contentView];
+    [self addSubview:self.buttonsView];
 
     [self slk_setupViewConstraints];
     [self slk_updateConstraintConstants];
@@ -192,8 +198,10 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         _textView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, -1.0, 0.0, 1.0);
         _textView.textContainerInset = UIEdgeInsetsMake(8.0, 4.0, 8.0, 0.0);
         _textView.layer.cornerRadius = 5.0;
+        /*
         _textView.layer.borderWidth = 0.5;
         _textView.layer.borderColor =  [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
+        */
     }
     return _textView;
 }
@@ -220,6 +228,61 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     return _inputAccessoryView;
 }
 
+- (UIView *)buttonsView
+{
+    if (!_buttonsView) {
+        _buttonsView = [UIView new];
+        _buttonsView.translatesAutoresizingMaskIntoConstraints = NO;
+        _buttonsView.backgroundColor = [UIColor whiteColor];
+        
+        [_buttonsView addSubview: self.stackButtonsView];
+        [_buttonsView addSubview: self.submitButton];
+        
+        NSDictionary *views = @{@"stackButtonsView": self.stackButtonsView,
+                                @"submitButton": self.submitButton,
+                                };
+        
+        NSDictionary *metrics = @{@"top" : @(self.contentInset.top),
+                                  @"left" : @(self.contentInset.left),
+                                  @"bottom" : @(self.contentInset.top),
+                                  @"right" : @(self.contentInset.right)
+                                  };
+
+        [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[stackButtonsView]-(right)-[submitButton(60)]-(<=right)-|" options:0 metrics:metrics views:views]];
+        [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[stackButtonsView]-(bottom)-|" options:0 metrics:metrics views:views]];
+        [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[submitButton]-(bottom)-|" options:0 metrics:metrics views:views]];
+
+    }
+    return _buttonsView;
+}
+
+- (UIStackView* )stackButtonsView
+{
+    if (!_stackButtonsView) {
+        _stackButtonsView = [UIStackView new];
+        _stackButtonsView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _stackButtonsView;
+}
+
+- (UIButton *)submitButton
+{
+    if (!_submitButton) {
+        _submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _submitButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _submitButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+        _submitButton.enabled = NO;
+
+        NSString *title = NSLocalizedString(@"Send", nil);
+        [_submitButton setTitle:title forState:UIControlStateNormal];
+        
+        _submitButton.layer.cornerRadius = 5.0;
+        _submitButton.layer.borderWidth = 0.5;
+        _submitButton.layer.borderColor =  [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
+    }
+    return _submitButton;
+}
+
 - (UIButton *)leftButton
 {
     if (!_leftButton) {
@@ -236,10 +299,9 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         _rightButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _rightButton.translatesAutoresizingMaskIntoConstraints = NO;
         _rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
-        _rightButton.enabled = NO;
+        _rightButton.enabled = YES;
         
-        NSString *title = NSLocalizedString(@"Send", nil);
-        
+        NSString *title = NSLocalizedString(@"Z", nil);
         [_rightButton setTitle:title forState:UIControlStateNormal];
     }
     return _rightButton;
@@ -331,7 +393,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         _charCountLabel.textAlignment = NSTextAlignmentRight;
         _charCountLabel.font = [UIFont systemFontOfSize:11.0];
         
-        _charCountLabel.hidden = NO;
+        _charCountLabel.hidden = YES;
     }
     return _charCountLabel;
 }
@@ -343,7 +405,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (CGFloat)minimumInputbarHeight
 {
-    CGFloat minimumHeight = self.textView.intrinsicContentSize.height;
+    CGFloat minimumHeight = self.toolBarButtonsViewHeight + self.textView.intrinsicContentSize.height;
     minimumHeight += self.contentInset.top;
     minimumHeight += self.slk_bottomMargin;
     
@@ -352,7 +414,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (CGFloat)appropriateHeight
 {
-    CGFloat height = 0.0;
+    CGFloat height = self.toolBarButtonsViewHeight;
     CGFloat minimumHeight = [self minimumInputbarHeight];
     
     if (self.textView.numberOfLines == 1) {
@@ -562,7 +624,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 - (void)setLeftButtonHidden:(BOOL)isHidden
 {
     self.leftButtonIsHidden = isHidden;
-    CGFloat leftButtonWidth = isHidden ? 0 : [self.rightButton intrinsicContentSize].width;
+    CGFloat leftButtonWidth = isHidden ? 0 : [self.leftButton intrinsicContentSize].width;
     self.leftButton.hidden = isHidden;
     self.leftButtonWC.constant = leftButtonWidth;
 }
@@ -675,10 +737,12 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (void)slk_didChangeTextViewContentSize:(NSNotification *)notification
 {
+    /*
     if (self.maxCharCount > 0) {
         BOOL shouldHide = (self.textView.numberOfLines == 1) || self.editing;
         self.charCountLabel.hidden = shouldHide;
     }
+    */
 }
 
 - (void)slk_didChangeContentSizeCategory:(NSNotification *)notification
@@ -701,6 +765,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                             @"editorContentView": self.editorContentView,
                             @"charCountLabel": self.charCountLabel,
                             @"contentView": self.contentView,
+                            @"buttonsView": self.buttonsView,
                             };
     
     NSDictionary *metrics = @{@"top" : @(self.contentInset.top),
@@ -710,15 +775,17 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[leftButton(0)]-(<=left)-[textView]-(right)-[rightButton(0)]-(right)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=0)-[leftButton(0)]-(0@750)-|" options:0 metrics:metrics views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=0)-[rightButton]-(<=0)-|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[rightButton]-(>=0)-[buttonsView]-(0)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left@250)-[charCountLabel(<=50@1000)]-(right@750)-|" options:0 metrics:metrics views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[editorContentView(0)]-(<=top)-[textView(0@999)]-(0)-|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[editorContentView(0)]-(<=top)-[textView(0@999)]-(4)-[buttonsView(44)]-(0)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editorContentView]|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[contentView(0)]|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonsView]|" options:0 metrics:metrics views:views]];
 
-    self.textViewBottomMarginC = [self slk_constraintForAttribute:NSLayoutAttributeBottom firstItem:self secondItem:self.textView];
+    self.textViewBottomMarginC = [self slk_constraintForAttribute:NSLayoutAttributeBottom firstItem:self secondItem:self.buttonsView];
     self.editorContentViewHC = [self slk_constraintForAttribute:NSLayoutAttributeHeight firstItem:self.editorContentView secondItem:nil];
+    
     self.contentViewHC = [self slk_constraintForAttribute:NSLayoutAttributeHeight firstItem:self.contentView secondItem:nil];;
     self.contentViewHC.active = NO; // Disabled by default, so the height is calculated with the height of its subviews
     
@@ -773,11 +840,11 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         self.rightButtonWC.constant = [self slk_appropriateRightButtonWidth];
         self.rightMarginWC.constant = [self slk_appropriateRightButtonMargin];
         
-        CGFloat rightVerMargin = (self.intrinsicContentSize.height - self.slk_contentViewHeight - self.rightButton.intrinsicContentSize.height) / 2.0;
-        CGFloat rightVerBottomMargin = rightVerMargin + self.slk_contentViewHeight;
+//        CGFloat rightVerMargin = (self.intrinsicContentSize.height - self.slk_contentViewHeight - self.rightButton.intrinsicContentSize.height) / 2.0;
+//        CGFloat rightVerBottomMargin = rightVerMargin + self.slk_contentViewHeight;
         
-        self.rightButtonTopMarginC.constant = rightVerMargin;
-        self.rightButtonBottomMarginC.constant = rightVerBottomMargin;
+//        self.rightButtonTopMarginC.constant = rightVerMargin;
+//        self.rightButtonBottomMarginC.constant = rightVerBottomMargin;
     }
 }
 

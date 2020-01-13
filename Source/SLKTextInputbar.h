@@ -42,14 +42,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** The custom input accessory view, used as empty achor view to detect the keyboard frame. */
 @property (nonatomic, readonly, strong) SLKInputAccessoryView *inputAccessoryView;
 
+/** The stack view that contains some buttons. */
+@property (nonatomic, strong) UIStackView *stackButtonsView;
+
+/** The right action button action. */
+@property (nonatomic, strong) UIButton *submitButton;
+
 /** The left action button action. */
 @property (nonatomic, strong) UIButton *leftButton;
 
 /** The right action button action. */
 @property (nonatomic, strong) UIButton *rightButton;
-
-/** YES if the right button should be hidden animatedly in case the text view has no text in it. Default is YES. */
-@property (nonatomic, readwrite) BOOL leftButtonIsHidden;
 
 /** YES if the right button should be hidden animatedly in case the text view has no text in it. Default is YES. */
 @property (nonatomic, readwrite) BOOL autoHideRightButton;
@@ -100,6 +103,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** The accessory view's maximum height. Default is 38 pts. */
 @property (nonatomic, assign) CGFloat editorContentViewHeight;
+
+/** The buttons container view's maximum height. Default is 44 pts. */
+@property (nonatomic, assign) CGFloat toolBarButtonsViewHeight;
 
 /** A Boolean value indicating whether the control is in edit mode. */
 @property (nonatomic, getter = isEditing) BOOL editing;
