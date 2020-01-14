@@ -28,7 +28,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     
     self.backgroundColor = enabled ? [UIColor colorWithRed: 48/255.0 green: 161/255.0 blue: 249/255.0 alpha: 1.0] : [UIColor whiteColor];
 }
-kasjdf
+
 @end
 
 
