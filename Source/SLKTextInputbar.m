@@ -17,6 +17,21 @@
 
 NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveNotification";
 
+@interface UISendButton: UIButton
+    
+@end
+
+@implementation UISendButton
+
+-(void)setEnabled:(BOOL)enabled {
+    super.enabled = enabled;
+    
+    self.backgroundColor = enabled ? [UIColor colorWithRed: 48/255.0 green: 161/255.0 blue: 249/255.0 alpha: 1.0] : [UIColor whiteColor];
+}
+kasjdf
+@end
+
+
 @interface SLKTextInputbar ()
 
 @property (nonatomic, strong) NSLayoutConstraint *textViewBottomMarginC;
@@ -242,7 +257,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                                   @"right" : @(self.contentInset.right)
                                   };
 
-        [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[stackButtonsView]-(>=right)-[submitButton(60)]-(right)-|" options:0 metrics:metrics views:views]];
+        [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(16)-[stackButtonsView]-(>=right)-[submitButton(60)]-(16)-|" options:0 metrics:metrics views:views]];
         [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[stackButtonsView]-(bottom)-|" options:0 metrics:metrics views:views]];
         [_buttonsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[submitButton]-(bottom)-|" options:0 metrics:metrics views:views]];
     }
@@ -257,7 +272,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         _stackButtonsView.axis = UILayoutConstraintAxisHorizontal;
         _stackButtonsView.alignment = UIStackViewAlignmentCenter;
         _stackButtonsView.distribution = UIStackViewDistributionFill;
-        _stackButtonsView.spacing = 16.0;
+        _stackButtonsView.spacing = 24.0;
 
         [_stackButtonsView addArrangedSubview:self.photoButton];
     }
@@ -267,10 +282,12 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 - (UIButton *)submitButton
 {
     if (!_submitButton) {
-        _submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        _submitButton = [UISendButton buttonWithType:UIButtonTypeSystem];
         _submitButton.translatesAutoresizingMaskIntoConstraints = NO;
         _submitButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
         _submitButton.enabled = NO;
+        [_submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_submitButton setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateDisabled];
 
         NSString *title = NSLocalizedString(@"Send", nil);
         [_submitButton setTitle:title forState:UIControlStateNormal];
@@ -493,7 +510,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
         }
     }
     
-    return self.contentInset.right;
+    return 16;
 }
 
 - (NSUInteger)slk_defaultNumberOfLines
@@ -775,8 +792,8 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                               @"right" : @(self.contentInset.right),
                               };
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[textView]-(right)-[rightButton(0)]-(right)-|" options:0 metrics:metrics views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[rightButton]-(>=0)-[buttonsView]-(0)-|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left)-[textView]-(right)-[rightButton(0)]-(16)-|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(16)-[rightButton]-(>=0)-[buttonsView]-(0)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(left@250)-[charCountLabel(<=50@1000)]-(right@750)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[editorContentView(0)]-(<=top)-[textView(0@999)]-(4)-[buttonsView(44)]-(0)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editorContentView]|" options:0 metrics:metrics views:views]];
