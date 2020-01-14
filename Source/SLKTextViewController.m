@@ -378,7 +378,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return _textInputbar.textView;
 }
 
-- (UIButton *)leftButton
+- (UIButton *)photoButton
 {
     return _textInputbar.photoButton;
 }
@@ -388,9 +388,14 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return _textInputbar.submitButton;
 }
 
+- (UIButton *)expandButton
+{
+    return _textInputbar.expandButton;
+}
+
 - (UIButton *)actionButton
 {
-    return _textInputbar.rightButton;
+    return _textInputbar.expandButton;
 }
 
 - (UIModalPresentationStyle)modalPresentationStyle

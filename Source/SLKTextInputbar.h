@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton *photoButton;
 
 /** The right action button action. */
-@property (nonatomic, strong) UIButton *rightButton;
+@property (nonatomic, strong) UIButton *expandButton;
 
 /** YES if the right button should be hidden animatedly in case the text view has no text in it. Default is YES. */
 @property (nonatomic, readwrite) BOOL autoHideRightButton;
