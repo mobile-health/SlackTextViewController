@@ -284,16 +284,17 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     if (!_submitButton) {
         _submitButton = [UISendButton buttonWithType:UIButtonTypeSystem];
         _submitButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _submitButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
-        _submitButton.enabled = NO;
+        _submitButton.titleLabel.font = [UIFont systemFontOfSize:17.0 weight:UIFontWeightSemibold];
+        
         [_submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_submitButton setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateDisabled];
 
+        _submitButton.enabled = NO;
         NSString *title = NSLocalizedString(@"Send", nil);
         [_submitButton setTitle:title forState:UIControlStateNormal];
         
         _submitButton.layer.cornerRadius = 5.0;
-        _submitButton.layer.borderWidth = 0.5;
+        _submitButton.layer.borderWidth = 1;
         _submitButton.layer.borderColor =  [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
     }
     return _submitButton;
