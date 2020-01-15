@@ -827,8 +827,10 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
     else {
         self.editorContentViewHC.constant = zero;
                         
+        /*
         self.rightButtonWC.constant = [self slk_appropriateRightButtonWidth];
         self.rightMarginWC.constant = [self slk_appropriateRightButtonMargin];
+        */
     }
 }
 
