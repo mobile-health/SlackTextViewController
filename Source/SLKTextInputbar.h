@@ -11,14 +11,14 @@
 @class SLKTextView;
 @class SLKInputAccessoryView;
 
-typedef NS_ENUM(NSUInteger, SLKCounterStyle) {
+typedef NS_ENUM (NSUInteger, SLKCounterStyle) {
     SLKCounterStyleNone,
     SLKCounterStyleSplit,
     SLKCounterStyleCountdown,
     SLKCounterStyleCountdownReversed
 };
 
-typedef NS_ENUM(NSUInteger, SLKCounterPosition) {
+typedef NS_ENUM (NSUInteger, SLKCounterPosition) {
     SLKCounterPositionTop,
     SLKCounterPositionBottom
 };
@@ -69,7 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** The most appropriate height calculated based on the amount of lines of text and other factors. */
 @property (nonatomic, readonly) CGFloat appropriateHeight;
 
-
 #pragma mark - Initialization
 ///------------------------------------------------
 /// @name Initialization
@@ -77,12 +76,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initializes a text input bar with a class to be used for the text view
- 
+
  @param textViewClass The class to be used when creating the text view. May be nil. If provided, the class must be a subclass of SLKTextView
  @return An initialized SLKTextInputbar object or nil if the object could not be created.
  */
 - (instancetype)initWithTextViewClass:(Class)textViewClass;
-
 
 #pragma mark - Text Editing
 ///------------------------------------------------
@@ -112,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Verifies if the text can be edited.
- 
+
  @param text The text to be edited.
  @return YES if the text is editable.
  */
@@ -132,7 +130,6 @@ NS_ASSUME_NONNULL_BEGIN
  Set hidden state for left button.
  */
 - (void)setLeftButtonHidden:(BOOL)isHidden;
-
 
 #pragma mark - Text Counting
 ///------------------------------------------------
@@ -163,4 +160,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
