@@ -571,7 +571,7 @@ NSString *const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveN
     _editing = editing;
     _editorContentView.hidden = !editing;
 
-    self.contentViewHC.active = editing;
+    //self.contentViewHC.active = editing;
 
     [super setNeedsLayout];
     [super layoutIfNeeded];
@@ -588,7 +588,7 @@ NSString *const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveN
     self.buttonsView.hidden = hidden;
 
     if (!self.isEditing) {
-        self.contentViewHC.active = hidden;
+        //self.contentViewHC.active = hidden;
 
         [super setNeedsLayout];
         [super layoutIfNeeded];
@@ -783,7 +783,7 @@ NSString *const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveN
     self.editorContentViewHC = [self slk_constraintForAttribute:NSLayoutAttributeHeight firstItem:self.editorContentView secondItem:nil];
 
     self.contentViewHC = [self slk_constraintForAttribute:NSLayoutAttributeHeight firstItem:self.contentView secondItem:nil];
-    self.contentViewHC.active = NO; // Disabled by default, so the height is calculated with the height of its subviews
+    self.contentViewHC.active = YES; // Disabled by default, so the height is calculated with the height of its subviews
 
     self.rightButtonWC = [self slk_constraintForAttribute:NSLayoutAttributeWidth firstItem:self.expandButton secondItem:nil];
     self.rightMarginWC = [[self slk_constraintsForAttribute:NSLayoutAttributeTrailing] firstObject];
